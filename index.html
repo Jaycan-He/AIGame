@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121e2a">
+  <meta name="description" content="沿雪地脚印追来的雪球，能替你打开木屋的门。六关雪地邮路，等你投递。">
+  <title>雪球只认脚印</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="levels.js"></script>
+  <script defer src="engine.js"></script>
+  <script defer src="renderer.js"></script>
+  <script defer src="game.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="wordmark">
+        <span class="postmark" aria-hidden="true">✳</span>
+        <strong>雪球只认脚印</strong>
+      </div>
+      <div class="top-actions">
+        <button type="button" id="sound-button" aria-pressed="false">音效关</button>
+        <button type="button" id="help-button" class="help-button">玩法</button>
+      </div>
+    </header>
+
+    <main class="play-layout">
+      <section class="game-panel" aria-labelledby="level-title">
+        <div class="game-header">
+          <div class="level-heading">
+            <p id="level-label">第 1 关 · 松林</p>
+            <h1 id="level-title">林间邮路</h1>
+          </div>
+          <div class="metrics" aria-label="本关成绩">
+            <div><span>用时</span><output id="elapsed">0:00.0</output></div>
+            <div><span>最佳</span><output id="best-time">—</output></div>
+            <div><span>邮戳</span><output id="stamp-count">0/2</output></div>
+          </div>
+        </div>
+
+        <div class="board-wrap">
+          <canvas id="board" width="1088" height="704" tabindex="0" aria-label="雪地邮路，使用方向键或 WASD 移动">
+            请使用支持 Canvas 的浏览器打开游戏。
+          </canvas>
+          <div class="cover" id="cover">
+            <div class="cover-card">
+              <span class="cover-icon" id="cover-icon" aria-hidden="true">✳</span>
+              <h2 id="cover-title">踏上雪地邮路</h2>
+              <p id="cover-copy">引雪球压下开关，把包裹送进木屋。</p>
+              <div class="results" id="results" hidden></div>
+              <div class="cover-actions">
+                <button class="primary" id="cover-primary" type="button">开始投递</button>
+                <button id="cover-secondary" type="button" hidden>重跑本关</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="control-bar">
+          <p class="keyboard-hint"><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd><span>或方向键移动</span></p>
+          <p class="touch-hint">按住方向键移动</p>
+          <div class="control-actions">
+            <button type="button" id="restart-button" title="重开本关（R）">重开</button>
+            <button type="button" id="pause-button" title="暂停或继续（Esc）">暂停</button>
+          </div>
+        </div>
+
+        <div class="touch-pad" aria-label="触屏方向键">
+          <button type="button" class="pad-up" data-direction="0" aria-label="向上移动">上</button>
+          <button type="button" data-direction="1" aria-label="向左移动">左</button>
+          <button type="button" data-direction="2" aria-label="向下移动">下</button>
+          <button type="button" data-direction="3" aria-label="向右移动">右</button>
+        </div>
+      </section>
+
+      <aside class="sidebar" aria-label="投递信息">
+        <section class="side-card mission">
+          <h2>投递任务</h2>
+          <div class="door-status">
+            <span class="door-icon" aria-hidden="true">⌂</span>
+            <div><strong id="door-state">木屋未开</strong><span id="plate-count">机关 0/1</span></div>
+          </div>
+          <div id="plates" class="plates" aria-label="开关进度"></div>
+          <p id="briefing">雪球才压得动开关。</p>
+          <label class="ghost-switch" id="ghost-setting" hidden>
+            <input type="checkbox" id="ghost-toggle">
+            <span>显示我的最佳路线</span>
+          </label>
+        </section>
+
+        <section class="side-card route-card">
+          <div class="section-heading">
+            <h2>雪地邮路</h2>
+            <span id="campaign-progress">0/6 已送达</span>
+          </div>
+          <ol class="route-list" id="route-list"></ol>
+        </section>
+      </aside>
+    </main>
+    <p class="screen-reader" id="announcement" role="status" aria-live="polite"></p>
+  </div>
+
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <div class="dialog-heading">
+      <h2 id="help-title">投递须知</h2>
+      <button type="button" id="close-help" aria-label="关闭玩法">关闭</button>
+    </div>
+    <dl class="instructions">
+      <div><dt>移动</dt><dd>按住方向键、WASD 或屏幕方向键。按 R 重开，按 Esc 暂停。</dd></div>
+      <div><dt>雪球追脚印</dt><dd>雪球会晚几步沿你的路线滚来。回头或原地等太久都可能撞上它。</dd></div>
+      <div><dt>机关与冰面</dt><dd>按编号让雪球压下铜色开关。踩上蓝冰会沿原方向滑动，直到离开冰面或被挡住。</dd></div>
+      <div><dt>投递评级</dt><dd>送达获得一星，收齐邮戳和在目标时间内送达各加一星。通关后可显示自己的最快路线。</dd></div>
+    </dl>
+    <button class="primary" type="button" id="dismiss-help">返回游戏</button>
+  </dialog>
+</body>
+</html>
